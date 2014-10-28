@@ -5,10 +5,11 @@
 var path = require('path');
 var env = require('yeoman-environment').createEnv();
 var nopt = require('nopt');
+var mctCore = require('./lib/index.js');
 
 var opts = nopt();
 var args = opts.argv.remain;
-var cmd = args[0];
+var cmd = args.shift();
 
 var options = {
   debug: true
@@ -28,4 +29,13 @@ env.lookup(function () {
     env.register(path.resolve(__dirname, './cli-menu'), 'menu');
     env.run(['menu'], {});
   }
+
+  if (cmd === 'new') {
+    var options = {};
+    if (args[0]) {
+      options.name = args[0];
+    }
+    mctCore.createProject(options);
+  }
+
 });
