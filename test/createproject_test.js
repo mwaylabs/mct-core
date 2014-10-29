@@ -43,7 +43,7 @@ var executeYoStub = function(options, cb) {
 
 describe('.createProject()', function () {
   var stubExecuteYo;
-  this.timeout(5000);
+  this.timeout(60000);
 
   beforeEach(function(done) {
 
