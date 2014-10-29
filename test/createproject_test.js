@@ -2,12 +2,12 @@
 
 var mctCore = require('../lib/create-project.js');
 var path = require('path');
-var assert = require('./assert');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var sinon = require('sinon');
 var yeoman  = require('yeoman-generator');
 var helpers = yeoman.test;
+var assert = yeoman.assert;
 
 var executeYoStub = function(options, cb) {
   var answers, subGen = [];
