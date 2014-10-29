@@ -35,7 +35,7 @@ env.lookup(function () {
     if (args[0]) {
       options.name = args[0];
     }
-    mctCore.createProject(options);
+    mctCore.createProject.run(options);
   }
 
 });
