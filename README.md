@@ -30,7 +30,7 @@ Legend
   yo:server endpoint
 - <state> is optional client or server
 
-***Yo
+##Yo
 ````
   mcap
   mcap new <projectname>
@@ -41,15 +41,9 @@ Legend
   //view available gen commands https://github.com/mwaylabs/generator-m-server/blob/master/README.md
   mcap yo:server endpoint <endpoint name>
   
-  // to seperate it plz use
-  mcap yo:server model <model name>
-   
-  // create a model in client
-  mcap yo:server model:client <modelname>
-  
 ````
 
-***Gulp
+##Gulp
 
 ````
 //start gulp default task client and server task
@@ -65,5 +59,12 @@ mcap gulp
  mcap gulp:client watch
  
 ````
-***CLI
+
+##CLI
+````
+  // create a model in client and server
+  mcap model <modelname>
+  mcap server
+  mcap new
+````
 @todo
