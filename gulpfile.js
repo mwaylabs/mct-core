@@ -21,7 +21,7 @@ if (process.env.CI) {
 gulp.task('lint', function () {
   return gulp.src(paths.lint)
     .pipe(plugins.jshint('.jshintrc'))
-    .pipe(plugins.plumber(plumberConf))
+    // .pipe(plugins.plumber(plumberConf))
     .pipe(plugins.jscs())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });
@@ -31,7 +31,7 @@ gulp.task('istanbul', function (cb) {
     .pipe(plugins.istanbul()) // Covering files
     .on('finish', function () {
       gulp.src(paths.tests, {cwd: __dirname})
-        .pipe(plugins.plumber(plumberConf))
+        // .pipe(plugins.plumber(plumberConf))
         .pipe(plugins.mocha())
         .pipe(plugins.istanbul.writeReports()) // Creating the reports after tests runned
         .on('finish', function() {

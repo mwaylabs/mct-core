@@ -1,6 +1,7 @@
 'use strict';
 
 var mctCore = require('../lib/create-project.js');
+var yo = require('../lib/util/yo.js');
 var path = require('path');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
@@ -9,11 +10,11 @@ var yeoman  = require('yeoman-generator');
 var helpers = yeoman.test;
 var assert = yeoman.assert;
 
-var executeYoStub = function(options, cb) {
+var executeYoStub = function(generatorName, options, cb) {
   var answers, subGen = [];
 
-  if (options.generator === 'm') {
-    options.opts['skip-sdk'] = true;
+  if (generatorName === 'm') {
+    options['skip-sdk'] = true;
     answers = {
       'appId': 'com.mwaysolutions.helloapp',
       'bowerPackages': [
@@ -34,9 +35,9 @@ var executeYoStub = function(options, cb) {
     ];
   }
 
-  helpers.run('generator-' + options.generator)
+  helpers.run('generator-' + generatorName)
   .withPrompt(answers)
-  .withOptions(options.opts)
+  .withOptions(options)
   .withGenerators(subGen)
   .on('end', cb);
 };
@@ -47,7 +48,7 @@ describe('.createProject()', function () {
 
   beforeEach(function(done) {
 
-    stubExecuteYo = sinon.stub(mctCore, 'executeYo', executeYoStub);
+    stubExecuteYo = sinon.stub(yo.prototype, '_run', executeYoStub);
 
     var dir = path.resolve('./test/temp');
     process.chdir('/');
@@ -66,7 +67,7 @@ describe('.createProject()', function () {
   });
 
   it('generate expected files', function (done) {
-    mctCore.run({
+    mctCore({
       name: 'HalloApp',
       skipInstall: true,
     }, function() {
