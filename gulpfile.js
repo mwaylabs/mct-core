@@ -7,7 +7,7 @@ var paths = {
   lint: ['./gulpfile.js', './lib/**/*.js'],
   watch: ['./gulpfile.js', './lib/**', './test/**/*.js', '!test/{temp,temp/**}'],
   tests: ['./test/**/*.js', '!test/{temp,temp/**}'],
-  source: ['./lib/*.js']
+  source: ['./lib/**/*.js']
 };
 
 var plumberConf = {};
@@ -21,7 +21,7 @@ if (process.env.CI) {
 gulp.task('lint', function () {
   return gulp.src(paths.lint)
     .pipe(plugins.jshint('.jshintrc'))
-    // .pipe(plugins.plumber(plumberConf))
+    .pipe(plugins.plumber(plumberConf))
     .pipe(plugins.jscs())
     .pipe(plugins.jshint.reporter('jshint-stylish'));
 });
@@ -30,8 +30,8 @@ gulp.task('istanbul', function (cb) {
   gulp.src(paths.source)
     .pipe(plugins.istanbul()) // Covering files
     .on('finish', function () {
-      gulp.src(paths.tests, {cwd: __dirname})
-        // .pipe(plugins.plumber(plumberConf))
+      gulp.src(paths.tests)
+        .pipe(plugins.plumber(plumberConf))
         .pipe(plugins.mocha())
         .pipe(plugins.istanbul.writeReports()) // Creating the reports after tests runned
         .on('finish', function() {
@@ -49,8 +49,8 @@ gulp.task('bump', ['test'], function () {
     .pipe(gulp.dest('./'));
 });
 
-gulp.task('watch', ['istanbul'], function () {
-  gulp.watch(paths.watch, ['istanbul']);
+gulp.task('watch', ['test'], function () {
+  gulp.watch(paths.watch, ['test']);
 });
 
 gulp.task('test', ['lint', 'istanbul']);

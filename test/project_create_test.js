@@ -1,12 +1,13 @@
 'use strict';
 
 var mctCore = require('..');
-var yo = require('../lib/util/yo.js');
+var os = require('os');
 var path = require('path');
 var rimraf = require('rimraf');
 var mkdirp = require('mkdirp');
 var sinon = require('sinon');
 var yeoman  = require('yeoman-generator');
+var yo = require('../lib/util/yo.js');
 var helpers = yeoman.test;
 var assert = yeoman.assert;
 
@@ -50,7 +51,7 @@ describe('.project.create()', function () {
 
     stubExecuteYo = sinon.stub(yo.prototype, '_run', executeYoStub);
 
-    var dir = path.resolve('./test/temp');
+    var dir = path.join(os.tmpdir(), './tmp');
     process.chdir('/');
     rimraf(dir, function (err) {
       if (err) {
