@@ -35,12 +35,18 @@ var executeYoStub = function(generatorName, options, cb) {
       path.join(__dirname, '../node_modules/generator-m/service')
     ];
   }
+  var DummyGen = {
+    installDependencies: function(cb) {
+      cb();
+    }
+  };
 
   helpers.run('generator-' + generatorName)
   .withPrompt(answers)
   .withOptions(options)
   .withGenerators(subGen)
   .on('end', cb);
+  return DummyGen;
 };
 
 describe('.project.create()', function () {
@@ -87,6 +93,16 @@ describe('.project.create()', function () {
 
       assert.file(expectedFiles);
       assert.fileContent(expectedContent);
+      done();
+    });
+  });
+
+  it('generate expected files', function (done) {
+    mctCore.project.create({
+      name: 'HalloApp',
+      skipInstall: false,
+    }, function() {
+
       done();
     });
   });
