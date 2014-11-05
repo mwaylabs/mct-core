@@ -23,11 +23,11 @@ describe('.model.create()', function () {
     assert.throws(mctCore.model.create.bind(null));
   });
 
-  it('take a callback', function () {
+  it.skip('take a callback', function () {
     mctCore.model.create(function() {});
   });
 
-  it('create with callback', function () {
+  it.skip('create with callback', function () {
     var callback = sinon.spy();
     mctCore.model.create(callback);
     assert(stubExecuteYo.calledWith('mcap:model'));
