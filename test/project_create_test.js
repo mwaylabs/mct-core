@@ -1,6 +1,6 @@
 'use strict';
 
-var mctCore = require('../lib/create-project.js');
+var mctCore = require('..');
 var yo = require('../lib/util/yo.js');
 var path = require('path');
 var rimraf = require('rimraf');
@@ -42,7 +42,7 @@ var executeYoStub = function(generatorName, options, cb) {
   .on('end', cb);
 };
 
-describe('.createProject()', function () {
+describe('.project.create()', function () {
   var stubExecuteYo;
   this.timeout(60000);
 
@@ -67,7 +67,7 @@ describe('.createProject()', function () {
   });
 
   it('generate expected files', function (done) {
-    mctCore({
+    mctCore.project.create({
       name: 'HalloApp',
       skipInstall: true,
     }, function() {
