@@ -16,3 +16,55 @@ Copyright (c) 2014 M-Way Solutions GmbH. Licensed under the MIT license.
 [daviddm-image]: https://david-dm.org/mwaylabs/mct-core
 [coveralls-url]: https://coveralls.io/r/mwaylabs/mct-core
 [coveralls-image]: https://coveralls.io/repos/mwaylabs/mct-core/badge.png
+
+
+Commands
+====
+
+Legend
+===
+- mcap is always needed
+- yo === yeoman global
+- <generator> at the moment we have to available choices "m" or "server"
+  yo:m view
+  yo:server endpoint
+- <state> is optional client or server
+
+##Yo
+````
+  mcap
+  mcap new <projectname>
+  
+  //view available gen commands https://github.com/mwaylabs/generator-m/blob/master/README.md
+  mcap yo:<generator> view <view name>
+  
+  //view available gen commands https://github.com/mwaylabs/generator-m-server/blob/master/README.md
+  mcap yo:server endpoint <endpoint name>
+  
+````
+
+##Gulp
+
+````
+//start gulp default task client and server task
+mcap gulp
+
+//start gulp default on state
+ mcap gulp:<state>
+ 
+ //start gulp <task> on client and server
+ mcap gulp watch
+ 
+ //start gulp:<state> <task> on client
+ mcap gulp:client watch
+ 
+````
+
+##CLI
+````
+  // create a model in client and server
+  mcap model <modelname>
+  mcap server
+  mcap new
+````
+@todo
