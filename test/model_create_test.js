@@ -10,8 +10,18 @@ describe('.model.create()', function () {
   var stubExecuteYo;
 
   beforeEach(function() {
-    stubExecuteYo = sinon.stub(yo.prototype, '_run', function(generator, opts, cb) {
-      cb();
+    stubExecuteYo = sinon.stub(yo.prototype, 'run', function(generator, opts, cb) {
+      var DummyGen = {};
+
+      if (generator === 'mcap:model') {
+        DummyGen.prepareValues = function() {
+          return {
+            name: 'Todo'
+          };
+        };
+      }
+
+      cb(null, DummyGen);
     });
   });
 
@@ -23,14 +33,18 @@ describe('.model.create()', function () {
     assert.throws(mctCore.model.create.bind(null));
   });
 
-  it.skip('take a callback', function () {
+  it('take a callback', function () {
     mctCore.model.create(function() {});
   });
 
-  it.skip('create with callback', function () {
+  it('create with callback', function () {
     var callback = sinon.spy();
     mctCore.model.create(callback);
-    assert(stubExecuteYo.calledWith('mcap:model'));
+
+    assert.ok(stubExecuteYo.calledTwice);
+    assert(stubExecuteYo.getCall(0).calledWith('mcap:model'));
+    assert(stubExecuteYo.getCall(1).calledWith(['m-server:bikini', 'Todo']));
+
     assert.ok(callback.calledOnce);
   });
 
