@@ -29,10 +29,6 @@ describe('.model.create()', function () {
     stubExecuteYo.restore();
   });
 
-  it('require a callback parameter', function () {
-    assert.throws(mctCore.model.create.bind(null));
-  });
-
   it('take a callback', function () {
     mctCore.model.create(function() {});
   });
