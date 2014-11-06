@@ -77,7 +77,10 @@ describe('.project.create()', function () {
     mctCore.project.create({
       name: 'HalloApp',
       skipInstall: true,
-    }, function() {
+    }, function(err) {
+      if (err) {
+        return done(err);
+      }
 
       var expectedFiles = [
         'mcap.json',
@@ -93,18 +96,25 @@ describe('.project.create()', function () {
 
       assert.file(expectedFiles);
       assert.fileContent(expectedContent);
-      done();
+      done(err);
     });
   });
 
-  it('generate expected files', function (done) {
+  it('return the project path', function (done) {
+    mctCore.project.create({
+      name: 'HalloApp',
+      skipInstall: true,
+    }, function(err, projectSummary) {
+      assert.ok(projectSummary.basePath.indexOf('HalloApp') > -1);
+      done(err);
+    });
+  });
+
+  it('runs npm install', function (done) {
     mctCore.project.create({
       name: 'HalloApp',
       skipInstall: false,
-    }, function() {
-
-      done();
-    });
+    }, done);
   });
 
 });
