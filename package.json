@@ -23,7 +23,7 @@
     "generator-m-server": "^0.1.0",
     "generator-mcap": "^0.1.0",
     "lodash": "^2.4.1",
-    "yeoman-environment": "^1.0.2"
+    "yeoman-environment": "^1.1.1"
   },
   "devDependencies": {
     "coveralls": "^2.11.1",
