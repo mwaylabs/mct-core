@@ -6,9 +6,11 @@ var yeoman  = require('yeoman-generator');
 var mcapDeploy  = require('mcap-deploy');
 var q = require('q');
 var assert = yeoman.assert;
+var GulpUtil = require('../lib/util/gulp.js');
 
 describe('.deploy()', function () {
   var stubDeploy;
+  var stubExecuteGulp;
 
   beforeEach(function() {
     stubDeploy = sinon.stub(mcapDeploy, 'deploy', function(options) {
@@ -22,10 +24,15 @@ describe('.deploy()', function () {
 
       return deferred.promise;
     });
+
+    stubExecuteGulp = sinon.stub(GulpUtil.prototype, '_run', function() {
+      this.emit('exit', 0);
+    });
   });
 
   afterEach(function() {
     stubDeploy.restore();
+    stubExecuteGulp.restore();
   });
 
   it('require options', function () {
@@ -34,10 +41,6 @@ describe('.deploy()', function () {
 
   it('take options', function () {
     mctCore.deploy({});
-  });
-
-  it('take a callback', function () {
-    mctCore.deploy(function() {});
   });
 
   it('deploy with callback', function (done) {
@@ -49,14 +52,13 @@ describe('.deploy()', function () {
       rootPath: './path/to/myapp/'
     };
 
-    var callback = function(err, data) {
-      assert.equal(err, null);
+    var handler = function(data) {
       assert.equal(data.client, 'http://localhost/orga/myapp/index.html');
       assert.equal(data.server, 'http://localhost/orga/myapp/api/');
       done();
     };
 
-    mctCore.deploy(options, callback);
+    mctCore.deploy(options).on('complete', handler);
   });
 
   it('deploy with error callback', function (done) {
@@ -64,13 +66,13 @@ describe('.deploy()', function () {
       baseurl: 'error-case'
     };
 
-    var callback = function(err, data) {
+    var handler = function(err, data) {
       assert.ok(err);
       assert.ok(err.message, 'some-error');
       assert.equal(data, null);
       done();
     };
 
-    mctCore.deploy(options, callback);
+    mctCore.deploy(options).on('error', handler);
   });
 });

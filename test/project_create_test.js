@@ -8,6 +8,7 @@ var mkdirp = require('mkdirp');
 var sinon = require('sinon');
 var yeoman  = require('yeoman-generator');
 var yo = require('../lib/util/yo.js');
+var GulpUtil = require('../lib/util/gulp.js');
 var helpers = yeoman.test;
 var assert = yeoman.assert;
 
@@ -51,11 +52,15 @@ var executeYoStub = function(generatorName, options, cb) {
 
 describe('.project.create()', function () {
   var stubExecuteYo;
+  var stubExecuteGulp;
   this.timeout(60000);
 
   beforeEach(function(done) {
 
     stubExecuteYo = sinon.stub(yo.prototype, '_run', executeYoStub);
+    stubExecuteGulp = sinon.stub(GulpUtil.prototype, '_run', function() {
+      this.emit('exit', 0);
+    });
 
     var dir = path.join(os.tmpdir(), './tmp');
     process.chdir('/');
@@ -71,6 +76,7 @@ describe('.project.create()', function () {
 
   afterEach(function() {
     stubExecuteYo.restore();
+    stubExecuteGulp.restore();
   });
 
   it('generate expected files', function (done) {
