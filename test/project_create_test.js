@@ -88,6 +88,15 @@ describe('.project.create()', function () {
         'server/package.json'
       ];
 
+      var unexpectedFiles = [
+        'client/.gitignore',
+        'client/.mcapignore',
+        'client/.gitattributes',
+        'server/.gitignore',
+        'server/.mcapignore',
+        'server/.gitattributes'
+      ];
+
       var expectedContent = [
         ['mcap.json', /"name": "HalloApp"/],
         ['client/bower.json', /"name": "HalloApp"/],
@@ -95,6 +104,7 @@ describe('.project.create()', function () {
       ];
 
       assert.file(expectedFiles);
+      assert.noFile(unexpectedFiles);
       assert.fileContent(expectedContent);
       done(err);
     });
