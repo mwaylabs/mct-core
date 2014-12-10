@@ -2,15 +2,19 @@
 
 var mctCore = require('..');
 var sinon = require('sinon');
+var fs = require('fs');
 var yeoman  = require('yeoman-generator');
 var mcapDeploy  = require('mcap-deploy');
 var q = require('q');
 var assert = yeoman.assert;
 var GulpUtil = require('../lib/util/gulp.js');
+var checker = require('../lib/util/checker.js');
 
 describe('.deploy()', function () {
   var stubDeploy;
   var stubExecuteGulp;
+  var stubGetProjectRoot;
+  var stubFs;
 
   beforeEach(function() {
     stubDeploy = sinon.stub(mcapDeploy, 'deploy', function(options) {
@@ -28,11 +32,16 @@ describe('.deploy()', function () {
     stubExecuteGulp = sinon.stub(GulpUtil.prototype, '_run', function() {
       this.emit('exit', 0);
     });
+
+    stubGetProjectRoot = sinon.stub(checker, 'getProjectRoot', process.cwd);
+    stubFs = sinon.stub(fs, 'existsSync');
   });
 
   afterEach(function() {
     stubDeploy.restore();
     stubExecuteGulp.restore();
+    stubGetProjectRoot.restore();
+    stubFs.restore();
   });
 
   it('require options', function () {
@@ -43,7 +52,7 @@ describe('.deploy()', function () {
     mctCore.deploy({});
   });
 
-  it('deploy with callback', function (done) {
+  it('deploy with client', function (done) {
     var options = {
       baseurl: 'http://localhost/',
       username: 'admin',
@@ -58,6 +67,27 @@ describe('.deploy()', function () {
       done();
     };
 
+    stubFs.returns(true);
+    mctCore.deploy(options).on('complete', handler);
+  });
+
+
+  it('deploy without client', function (done) {
+    var options = {
+      baseurl: 'http://localhost/',
+      username: 'admin',
+      password: 'password',
+      baseAlias: 'myapp',
+      rootPath: './path/to/myapp/'
+    };
+
+    var handler = function(data) {
+      assert.ok(!data.client);
+      assert.equal(data.server, 'http://localhost/orga/myapp/api/');
+      done();
+    };
+
+    stubFs.returns(false);
     mctCore.deploy(options).on('complete', handler);
   });
 
