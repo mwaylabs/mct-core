@@ -2,12 +2,14 @@
 
 var mctCore = require('..');
 var yo = require('../lib/util/yo.js');
+var checker = require('../lib/util/checker.js');
 var sinon = require('sinon');
 var yeoman  = require('yeoman-generator');
 var assert = yeoman.assert;
 
 describe('.model.create()', function () {
   var stubExecuteYo;
+  var stubGetProjectRoot;
 
   beforeEach(function() {
     stubExecuteYo = sinon.stub(yo.prototype, 'run', function(generator, opts, cb) {
@@ -23,10 +25,13 @@ describe('.model.create()', function () {
 
       cb(null, DummyGen);
     });
+
+    stubGetProjectRoot = sinon.stub(checker, 'getProjectRoot', process.cwd);
   });
 
   afterEach(function() {
     stubExecuteYo.restore();
+    stubGetProjectRoot.restore();
   });
 
   it('take a callback', function () {
