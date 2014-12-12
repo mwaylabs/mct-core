@@ -49,7 +49,9 @@ describe('.deploy()', function () {
   });
 
   it('take options', function () {
-    mctCore.deploy({});
+    mctCore.deploy({
+      rootPath: './path/to/myapp/'
+    });
   });
 
   it('deploy with client', function (done) {
@@ -93,7 +95,8 @@ describe('.deploy()', function () {
 
   it('deploy with error callback', function (done) {
     var options = {
-      baseurl: 'error-case'
+      baseurl: 'error-case',
+      rootPath: './path/to/myapp/'
     };
 
     var handler = function(err, data) {
