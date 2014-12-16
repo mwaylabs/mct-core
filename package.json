@@ -26,6 +26,7 @@
     "lodash": "^2.4.1",
     "mcap-deploy": "^0.3.0",
     "mcap-log": "^0.1.1",
+    "mcap-logger": "~0.1.0",
     "yeoman-environment": "^1.1.1"
   },
   "devDependencies": {
