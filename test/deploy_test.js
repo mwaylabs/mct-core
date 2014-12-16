@@ -1,4 +1,5 @@
 'use strict';
+'use strict';
 
 var mctCore = require('..');
 var sinon = require('sinon');
