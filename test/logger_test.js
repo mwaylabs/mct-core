@@ -8,6 +8,7 @@ var q = require('q');
 
 describe('.logger()', function () {
   var stubLogger;
+  var stubResume;
 
   beforeEach(function() {
     stubLogger = sinon.stub(mcapLogger.prototype, 'watch', function() {
@@ -15,10 +16,16 @@ describe('.logger()', function () {
       deferred.resolve();
       return deferred.promise;
     });
+
+    stubResume = sinon.stub(process.stdin, 'resume', function() {
+      // Do not resume stdin during running tests,
+      // because this will block mocha from finishing.
+    });
   });
 
   afterEach(function() {
     stubLogger.restore();
+    stubResume.restore();
   });
 
   it('require options', function () {
