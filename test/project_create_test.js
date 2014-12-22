@@ -36,12 +36,7 @@ var executeYoStub = function(generatorName, options, cb) {
       path.join(__dirname, '../node_modules/generator-m/service')
     ];
   }
-  var DummyGen = {
-    installDependencies: function(cb) {
-      cb();
-    }
-  };
-
+  var DummyGen = {};
   helpers.run('generator-' + generatorName)
   .withPrompt(answers)
   .withOptions(options)
@@ -53,7 +48,7 @@ var executeYoStub = function(generatorName, options, cb) {
 describe('.project.create()', function () {
   var stubExecuteYo;
   var stubExecuteGulp;
-  this.timeout(60000);
+  this.timeout(600000);
 
   beforeEach(function(done) {
 
@@ -82,7 +77,7 @@ describe('.project.create()', function () {
   it('generate expected files', function (done) {
     mctCore.project.create({
       name: 'HalloApp',
-      skipInstall: true,
+      skipInstall: true
     }, function(err) {
       if (err) {
         return done(err);
@@ -119,18 +114,10 @@ describe('.project.create()', function () {
   it('return the project path', function (done) {
     mctCore.project.create({
       name: 'HalloApp',
-      skipInstall: true,
+      skipInstall: true
     }, function(err, projectSummary) {
       assert.ok(projectSummary.basePath.indexOf('HalloApp') > -1);
       done(err);
     });
   });
-
-  it('runs npm install', function (done) {
-    mctCore.project.create({
-      name: 'HalloApp',
-      skipInstall: false,
-    }, done);
-  });
-
 });
