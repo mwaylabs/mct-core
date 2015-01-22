@@ -20,7 +20,6 @@ describe('.deploy()', function () {
   beforeEach(function() {
     stubDeploy = sinon.stub(mcapDeploy, 'deploy', function(options) {
       var deferred = q.defer();
-
       if (options.baseurl === 'error-case') {
         deferred.reject(new Error('some-error'));
       } else {
@@ -66,7 +65,7 @@ describe('.deploy()', function () {
 
     var handler = function(data) {
       assert.equal(data.client, 'http://localhost/orga/myapp/index.html');
-      assert.equal(data.server, 'http://localhost/orga/myapp/api/');
+      assert.equal(data.server, 'http://localhost/orga/myapp/');
       done();
     };
 
@@ -86,7 +85,7 @@ describe('.deploy()', function () {
 
     var handler = function(data) {
       assert.ok(!data.client);
-      assert.equal(data.server, 'http://localhost/orga/myapp/api/');
+      assert.equal(data.server, 'http://localhost/orga/myapp/');
       done();
     };
 
