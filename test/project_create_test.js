@@ -11,6 +11,7 @@ var yo = require('../lib/util/yo.js');
 var GulpUtil = require('../lib/util/gulp.js');
 var helpers = yeoman.test;
 var assert = yeoman.assert;
+require('events').EventEmitter.prototype._maxListeners = 10000;
 
 var executeYoStub = function(generatorName, options, cb) {
   var answers, subGen = [];
@@ -31,9 +32,12 @@ var executeYoStub = function(generatorName, options, cb) {
       ]
     };
     subGen = [ // configure path to  subgenerators
+      path.join(__dirname, '../node_modules/generator-m/module'),
+      path.join(__dirname, '../node_modules/generator-m/constant'),
       path.join(__dirname, '../node_modules/generator-m/controller'),
-      path.join(__dirname, '../node_modules/generator-m/partial'),
+      path.join(__dirname, '../node_modules/generator-m/template'),
       path.join(__dirname, '../node_modules/generator-m/service')
+
     ];
   }
   var DummyGen = {};
@@ -48,7 +52,7 @@ var executeYoStub = function(generatorName, options, cb) {
 describe('.project.create()', function () {
   var stubExecuteYo;
   var stubExecuteGulp;
-  this.timeout(600000);
+  this.timeout(60000);
 
   beforeEach(function(done) {
 
@@ -59,6 +63,7 @@ describe('.project.create()', function () {
 
     var dir = path.join(os.tmpdir(), './tmp');
     process.chdir('/');
+    console.log(dir);
     rimraf(dir, function (err) {
       if (err) {
         return done(err);
